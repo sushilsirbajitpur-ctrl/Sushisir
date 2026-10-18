@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>प्राथमिक विद्यालय बाजितपुर पूर्वी - डिजिटल पोर्टल</title>
+</head>
+<body style="margin: 0; padding: 10px; background: #e0f7fa;">
+
+<div style="text-align: center; background: linear-gradient(135deg, #e0f7fa, #80deea); padding: 15px; border-radius: 15px; border: 3px solid #00838f; font-family: sans-serif; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+
+    <!-- स्कूल का सजा हुआ नाम और मार्गदर्शक -->
+    <div style="background: white; padding: 10px; border-radius: 10px; border-bottom: 4px solid #ff6f00; margin-bottom: 10px;">
+        <h3 style="color: #b71c1c; margin: 0; font-size: 17px;">🏫 प्राथमिक विद्यालय बाजितपुर पूर्वी</h3>
+        <p style="color: #555; margin: 3px 0 0 0; font-size: 11px;">मार्गदर्शक: सुशील सर | सीखो और मुस्कुराओ</p>
+    </div>
+
+    <!-- 0. विद्यार्थी का नाम और फोटो दर्ज करने वाला पैनल -->
+    <div id="loginPanel" style="background: white; padding: 15px; border-radius: 10px; border: 2px solid #00838f;">
+        <h3 style="color: #006064; margin-top: 0;">👋 छात्र पंजीकरण</h3>
+        <p style="font-size: 13px; color: #444;">अपना नाम लिखें और अपनी फोटो चुनें:</p>
+        
+        <div style="margin-bottom: 10px;">
+            <div id="photoPreviewBox" style="width: 70px; height: 70px; border-radius: 50%; background: #eceff1; border: 2px dashed #00838f; margin: 0 auto 8px auto; display: flex; align-items: center; justify-content: center; overflow: hidden; font-size: 11px; color: #666;">
+                फोटो
+            </div>
+            <input type="file" id="studentPhotoInput" accept="image/*" onchange="previewPhoto(event)" style="font-size: 11px; width: 85%;">
+        </div>
+
+        <input type="text" id="studentNameInput" placeholder="विद्यार्थी का नाम यहाँ लिखें" style="padding: 10px; font-size: 15px; width: 90%; border-radius: 6px; border: 2px solid #00838f; text-align: center; outline: none; margin-bottom: 10px;">
+        <br>
+        <button onclick="shuruatKare()" style="background-color: #00838f; color: white; padding: 10px 20px; font-size: 15px; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; width: 95%;">
+            पोर्टल में प्रवेश करें 🚀
+        </button>
+    </div>
+
+    <!-- 1. मुख्य होम मेनू -->
+    <div id="menuPanel" style="display: none;">
+        <div style="display: flex; align-items: center; background: white; padding: 8px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #b2ebf2;">
+            <img id="menuAvatar" src="" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #00838f; margin-right: 10px; display: none;">
+            <div style="text-align: left;">
+                <h3 style="color: #006064; margin: 0; font-size: 15px;"><span id="displayName">विद्यार्थी</span></h3>
+                <p style="font-size: 11px; color: #c2185b; margin: 2px 0 0 0; font-weight: bold;">🆔 <span id="displayId">PVBP-000</span></p>
+            </div>
+        </div>
+        
+        <button onclick="quizzMenuDikhao()" style="background-color: #0277bd; color: white; padding: 10px; font-size: 14px; font-weight: bold; border: none; border-radius: 8px; width: 90%; margin: 4px; cursor: pointer;">
+            🎮 गणित क्विज़ खेलें
+        </button>
+        <br>
+        <button onclick="scienceQuizMenuDikhao()" style="background-color: #2e7d32; color: white; padding: 10px; font-size: 14px; font-weight: bold; border: none; border-radius: 8px; width: 90%; margin: 4px; cursor: pointer;">
+            🌱 विज्ञान एवं पर्यावरण क्विज़
+        </button>
+        <br>
+        <button onclick="pahadaMenuDikhao()" style="background-color: #ff8f00; color: white; padding: 10px; font-size: 14px; font-weight: bold; border: none; border-radius: 8px; width: 90%; margin: 4px; cursor: pointer;">
+            📚 पहाड़ा सीखें (Tables)
+        </button>
+        <br>
+        <button onclick="storiesMenuDikhao()" style="background-color: #ad1457; color: white; padding: 10px; font-size: 14px; font-weight: bold; border: none; border-radius: 8px; width: 90%; margin: 4px; cursor: pointer;">
+            📖 बाल कविताएँ और कहानियाँ
+        </button>
+        <br>
+        <button onclick="dictMenuDikhao()" style="background-color: #00695c; color: white; padding: 10px; font-size: 14px; font-weight: bold; border: none; border-radius: 8px; width: 90%; margin: 4px; cursor: pointer;">
+            🔤 अंग्रेजी-हिंदी शब्दकोश
+        </button>
+        <br>
+        <button onclick="leaderboardDikhao()" style="background-color: #6a1b9a; color: white; padding: 10px; font-size: 14px; font-weight: bold; border: none; border-radius: 8px; width: 90%; margin: 4px; cursor: pointer;">
+            🏆 टॉप 10 लीडरबोर्ड
+        </button>
+    </div>
+
+    <!-- 1.1 गणित क्विज़ मोड -->
+    <div id="quizModePanel" style="display: none;">
+        <h3 style="color: #006064; margin: 5px 0; font-size: 16px;">🎮 गणित क्विज़ मोड</h3>
+        <p style="font-weight: bold; color: #333; margin: 6px 0; font-size: 13px;">1. गणित का प्रकार चुनें:</p>
+        <div>
+            <button onclick="opChuno('+')" style="background-color: #0277bd; color: white; padding: 10px; font-size: 13px; font-weight: bold; border: none; border-radius: 6px; width: 45%; margin: 3px;">➕ जोड़</button>
+            <button onclick="opChuno('-')" style="background-color: #2e7d32; color: white; padding: 10px; font-size: 13px; font-weight: bold; border: none; border-radius: 6px; width: 45%; margin: 3px;">➖ घटाव</button>
+            <button onclick="opChuno('*')" style="background-color: #ef6c00; color: white; padding: 10px; font-size: 13px; font-weight: bold; border: none; border-radius: 6px; width: 45%; margin: 3px;">✖️ गुणा</button>
+            <button onclick="opChuno('/')" style="background-color: #6a1b9a; color: white; padding: 10px; font-size: 13px; font-weight: bold; border: none; border-radius: 6px; width: 45%; margin: 3px;">➗ भाग</button>
+        </div>
+
+        <p style="font-weight: bold; color: #333; margin: 8px 0 4px 0; font-size: 13px;">2. कठिनाई स्तर (Level) चुनें:</p>
+        <div style="display: flex; justify-content: space-around;">
+            <button onclick="levelChuno(1)" style="background-color: #37474f; color: white; padding: 8px 10px; font-size: 12px; font-weight: bold; border: none; border-radius: 6px; cursor: pointer;">लेवल 1</button>
+            <button onclick="levelChuno(2)" style="background-color: #00838f; color: white; padding: 8px 10px; font-size: 12px; font-weight: bold; border: none; border-radius: 6px; cursor: pointer;">लेवल 2</button>
+            <button onclick="levelChuno(3)" style="background-color: #c2185b; color: white; padding: 8px 10px; font-size: 12px; font-weight: bold; border: none; border-radius: 6px; cursor: pointer;">लेवल 3</button>
+        </div>
+        <p id="selectedInfo" style="font-size: 11px; color: #d84315; font-weight: bold; margin-top: 6px;">चयनित: जोड़ (+) | लेवल 1</p>
+        
+        <button onclick="mukhyaMenuParJao()" style="background-color: #546e7a; color: white; padding: 6px 12px; font-size: 12px; border: none; border-radius: 6px; margin-top: 5px; cursor: pointer;">
+            🏠 पीछे जाएं
+        </button>
+    </div>
+
+    <!-- 1.2 विज्ञान एवं पर्यावरण क्विज़ पैनल -->
+    <div id="scienceQuizPanel" style="display: none; background: white; padding: 10px; border-radius: 10px; border: 2px solid #2e7d32;">
+        <h3 style="color: #2e7d32; margin-top: 0; font-size: 16px;">🌱 विज्ञान एवं पर्यावरण क्विज़</h3>
+        <div style="display: flex; justify-content: space-around; margin-bottom: 8px;">
+            <button onclick="startScienceQuiz('science')" style="background-color: #2e7d32; color: white; padding: 8px 12px; font-size: 12px; font-weight: bold; border: none; border-radius: 6px; cursor: pointer;">🔬 सामान्य विज्ञान</button>
+            <button onclick="startScienceQuiz('evs')" style="background-color: #00838f; color: white; padding: 8px 12px; font-size: 12px; font-weight: bold; border: none; border-radius: 6px; cursor: pointer;">🌿 पर्यावरण अध्ययन</button>
+        </div>
+        <button onclick="mukhyaMenuParJao()" style="background-color: #546e7a; color: white; padding: 6px 12px; font-size: 12px; border: none; border-radius: 6px; margin-top: 5px; cursor: pointer;">
+            🏠 पीछे जाएं
+        </button>
+    </div>
+
+    <!-- 1.3 पहाड़ा पैनल -->
+    <div id="pahadaPanel" style="display: none; background: white; padding: 10px; border-radius: 10px; border: 2px solid #ff8f00;">
+        <h3 style="color: #e65100; margin-top: 0; font-size: 18px;">📚 पहाड़ा सीखें (2 से 20 तक)</h3>
+        <select id="pahadaNum" onchange="pahadaDikhao()" style="padding: 8px; font-size: 15px; border-radius: 6px; border: 2px solid #ff8f00; width: 80%; text-align: center; outline: none; margin-bottom: 10px;">
+            <option value="2">2 का पहाड़ा</option>
+            <option value="3">3 का पहाड़ा</option>
+            <option value="4">4 का पहाड़ा</option>
+            <option value="5">5 का पहाड़ा</option>
+            <option value="6">6 का पहाड़ा</option>
+            <option value="7">7 का पहाड़ा</option>
+            <option value="8">8 का पहाड़ा</option>
+            <option value="9">9 का पहाड़ा</option>
+            <option value="10">10 का पहाड़ा</option>
+            <option value="12">12 का पहाड़ा</option>
+            <option value="15">15 का पहाड़ा</option>
+            <option value="20">20 का पहाड़ा</option>
+        </select>
+
+        <div id="pahadaBox" style="background: #fff3e0; padding: 10px; border-radius: 8px; font-size: 16px; font-weight: bold; color: #b71c1c; max-height: 160px; overflow-y: auto; text-align: left; line-height: 1.5; border: 1px dashed #ffb74d;">
+        </div>
+
+        <button onclick="mukhyaMenuParJao()" style="background-color: #546e7a; color: white; padding: 8px 15px; font-size: 13px; border: none; border-radius: 6px; margin-top: 10px; cursor: pointer;">
+            🏠 मुख्य मेनू पर जाएं
+        </button>
+    </div>
+
+    <!-- 1.4 बाल कविताएँ और कहानियाँ पैनल -->
+    <div id="storiesPanel" style="display: none; background: white; padding: 10px; border-radius: 10px; border: 2px solid #ad1457;">
+        <h3 style="color: #ad1457; margin-top: 0; font-size: 16px;">📖 बाल कविताएँ और कहानियाँ</h3>
+        <p style="font-size: 11px; color: #444; margin: 3px 0;">सुनने के लिए स्पीकर (🔊) पर क्लिक करें:</p>
+        
+        <div style="background: #fce4ec; padding: 8px; border-radius: 8px; font-size: 12px; text-align: left; max-height: 160px; overflow-y: auto; color: #333; line-height: 1.6; border: 1px dashed #f48fb1;">
+            <div style="margin-bottom: 10px; border-bottom: 1px solid #f8bbd0; padding-bottom: 6px;">
+                <b>1. मछली जल की रानी है 🐟</b><br>
+                मछली जल की रानी है, जीवन उसका पानी है।<br>
+                हाथ लगाओ तो डर जाएगी, बाहर निकालो तो मर जाएगी।<br>
+                <button onclick="bolo('मछली जल की रानी है, जीवन उसका पानी है। हाथ लगाओ तो डर जाएगी, बाहर निकालो तो मर जाएगी।')" style="background:#ad1457; color:white; border:none; padding:3px 8px; border-radius:4px; font-size:11px; cursor:pointer; margin-top:4px;">🔊 कविता सुनें</button>
+            </div>
+            <div style="margin-bottom: 10px; border-bottom: 1px solid #f8bbd0; padding-bottom: 6px;">
+                <b>2. तितली उड़ी 🦋</b><br>
+                तितली उड़ी बस पर चढ़ी, सीट ना मिली तो रोने लगी।<br>
+                ड्राइवर ने बोला आ मेरे पास, तितली बोली ना बाबा ना, मेरा घर है पास!<br>
+                <button onclick="bolo('तितली उड़ी बस पर चढ़ी, सीट ना मिली तो रोने लगी। ड्राइवर ने बोला आ मेरे पास, तितली बोली ना बाबा ना, मेरा घर है पास!')" style="background:#ad1457; color:white; border:none; padding:3px 8px; border-radius:4px; font-size:11px; cursor:pointer; margin-top:4px;">🔊 कविता सुनें</button>
+            </div>
+            <div>
+                <b>3. चतुर कौवा 🐦</b><br>
+                एक प्यासा कौवा पानी की तलाश में था। उसे एक घड़े में थोड़ा पानी दिखा। उसने एक-एक कंकर उठाकर घड़े में डाला, पानी ऊपर आया और कौवे ने पानी पी लिया।<br>
+                <button onclick="bolo('एक प्यासा कौवा पानी की तलाश में था। उसे एक घड़े में थोड़ा पानी दिखा। उसने एक-एक कंकर उठाकर घड़े में डाला, पानी ऊपर आया और कौवे ने पानी पी लिया।')" style="background:#ad1457; color:white; border:none; padding:3px 8px; border-radius:4px; font-size:11px; cursor:pointer; margin-top:4px;">🔊 कहानी सुनें</button>
+            </div>
+        </div>
+
+        <button onclick="mukhyaMenuParJao()" style="background-color: #546e7a; color: white; padding: 8px 15px; font-size: 12px; border: none; border-radius: 6px; margin-top: 8px; cursor: pointer;">
+            🏠 मुख्य मेनू पर जाएं
+        </button>
+    </div>
+
+    <!-- 1.5 व्याकरण और शब्दकोश पैनल -->
+    <div id="dictPanel" style="display: none; background: white; padding: 10px; border-radius: 10px; border: 2px solid #00695c;">
+        <h3 style="color: #00695c; margin-top: 0; font-size: 16px;">🔤 अंग्रेजी-हिंदी शब्दकोश</h3>
+        <input type="text" id="searchInput" placeholder="शब्द खोजें (जैसे: Apple, Run, Good)" oninput="searchWord()" style="padding: 7px; font-size: 13px; width: 85%; border-radius: 6px; border: 2px solid #00695c; text-align: center; outline: none; margin-bottom: 6px;">
+
+        <div id="dictResults" style="background: #e0f2f1; padding: 6px; border-radius: 8px; font-size: 12px; text-align: left; max-height: 150px; overflow-y: auto; color: #004d40; line-height: 1.5; border: 1px dashed #80cbc4;">
+        </div>
+
+        <button onclick="mukhyaMenuParJao()" style="background-color: #546e7a; color: white; padding: 8px 15px; font-size: 12px; border: none; border-radius: 6px; margin-top: 8px; cursor: pointer;">
+            🏠 मुख्य मेनू पर जाएं
+        </button>
+    </div>
+
+    <!-- 1.6 लीडरबोर्ड पैनल -->
+    <div id="leaderboardPanel" style="display: none; background: white; padding: 12px; border-radius: 10px; border: 2px solid #6a1b9a;">
+        <h3 style="color: #6a1b9a; margin-top: 0; font-size: 16px;">🏆 टॉप 10 लीडरबोर्ड</h3>
+        
+        <div style="display: flex; justify-content: space-around; margin-bottom: 8px;">
+            <button onclick="setLeaderboardTab('daily')" id="dailyTabBtn" style="background-color: #6a1b9a; color: white; padding: 6px 10px; font-size: 12px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">📅 आज के टॉप</button>
+            <button onclick="setLeaderboardTab('weekly')" id="weeklyTabBtn" style="background-color: #b0bec5; color: white; padding: 6px 10px; font-size: 12px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">📊 इस हफ्ते के टॉप</button>
+        </div>
+
+        <div id="leaderboardList" style="background: #f3e5f5; padding: 8px; border-radius: 8px; font-size: 13px; text-align: left; max-height: 160px; overflow-y: auto; color: #333; line-height: 1.5; border: 1px dashed #ce93d8;">
+        </div>
+
+        <button onclick="mukhyaMenuParJao()" style="background-color: #546e7a; color: white; padding: 8px 15px; font-size: 12px; border: none; border-radius: 6px; margin-top: 8px; cursor: pointer;">
+            🏠 मुख्य मेनू पर जाएं
+        </button>
+    </div>
+
+    <!-- 2. गेम खेलने वाला पैनल -->
+    <div id="gamePanel" style="display: none;">
+        <div style="display: flex; align-items: center; justify-content: space-around; background: white; padding: 6px; border-radius: 8px; margin: 8px 0; font-weight: bold; color: #006064; font-size: 11px; border: 1px solid #4dd0e1;">
+            <img id="gameAvatar" src="" style="width: 30px; height: 30px; border-radius: 50%; object-fit: cover; display: none;">
+            <span>🆔 <span id="badgeId">ID</span></span>
+            <span>⭐ स्कोर: <span id="scoreBox">0</span></span>
+            <span>⏱️ समय: <span id="timerBox">30</span>सें.</span>
+        </div>
+
+        <h1 id="sawalBox" style="font-size: 22px; color: #b71c1c; background: white; padding: 12px; border-radius: 8px; border: 2px dashed #00838f; margin: 10px 0;">5 + 3 = ?</h1>
+
+        <div id="optionsBox" style="margin-bottom: 10px;">
+            <!-- बहुविकल्पीय विकल्प यहाँ आएंगे -->
+        </div>
+
+        <input type="number" id="jawabInput" placeholder="उत्तर यहाँ लिखें" style="padding: 10px; font-size: 18px; width: 85%; border-radius: 8px; border: 2px solid #00838f; text-align: center; outline: none; display: none;">
+
+        <button id="submitBtn" onclick="jawabCheckKaro()" style="background-color: #00838f; color: white; padding: 12px 20px; font-size: 16px; font-weight: bold; border: none; border-radius: 8px; width: 90%; cursor: pointer; display: none;">
+            उत्तर जाँचें ✔️
+        </button>
+
+        <p id="messageBox" style="font-size: 14px; font-weight: bold; margin-top: 8px; min-height: 20px;"></p>
+        
+        <div style="display: flex; justify-content: space-around; margin-top: 6px;">
+            <button onclick="gameRoko()" style="background-color: #d32f2f; color: white; padding: 6px 12px; font-size: 12px; border: none; border-radius: 6px; cursor: pointer; width: 45%;">
+                ⏸️ गेम रोकें
+            </button>
+            <button onclick="mukhyaMenuParJao()" style="background-color: #546e7a; color: white; padding: 6px 12px; font-size: 12px; border: none; border-radius: 6px; cursor: pointer; width: 45%;">
+                🏠 मुख्य मेनू
+            </button>
+        </div>
+    </div>
+
+    <!-- 3. गेम ओवर और रिपोर्ट कार्ड पैनल -->
+    <div id="statsPanel" style="display: none; background: white; padding: 12px; border-radius: 10px; margin-top: 8px; border: 2px solid #c2185b;">
+        <h2 style="color: #c2185b; margin-top: 0; font-size: 18px;">🎮 रिपोर्ट कार्ड</h2>
+        
+        <img id="reportAvatar" src="" style="width: 55px; height: 55px; border-radius: 50%; object-fit: cover; border: 2px solid #c2185b; margin-bottom: 5px; display: none;">
+        
+        <div style="font-size: 13px; text-align: left; background: #fce4ec; padding: 8px; border-radius: 8px; line-height: 1.5; color: #333;">
+            <p style="margin: 3px 0;"><b>🆔 आईडी:</b> <span id="reportId"></span></p>
+            <p style="margin: 3px 0;"><b>👤 विद्यार्थी:</b> <span id="reportName"></span></p>
+            <p style="margin: 3px 0;"><b>⭐ कुल स्कोर:</b> <span id="finalScore">0</span></p>
+            <p style="margin: 3px 0;"><b>🏆 आपकी रैंकिंग (Rank):</b> <span id="playerRank" style="color: #b71c1c; font-weight: bold;">गणना हो रही है...</span></p>
+            <p style="margin: 3px 0;"><b>✅ सही / ❌ गलत:</b> <span id="totalCorrect">0</span> / <span id="totalWrong">0</span></p>
+            <p style="margin: 3px 0;"><b>⏳ बिताया समय:</b> <span id="watchTimeDisplay">0 सेकंड</span></p>
+            <p id="formStatus" style="color: #2e7d32; font-weight: bold; margin-top: 6px; text-align: center; font-size: 12px;"></p>
+        </div>
+        
+        <button onclick="leaderboardDikhao()" style="background-color: #6a1b9a; color: white; padding: 10px; font-size: 13px; font-weight: bold; border: none; border-radius: 8px; width: 90%; margin-top: 8px; cursor: pointer;">
+            🏆 टॉप 10 लीडरबोर्ड देखें
+        </button>
+        <br>
+        <button onclick="gameDubaraShuruKaro()" style="background-color: #c2185b; color: white; padding: 10px; font-size: 13px; font-weight: bold; border: none; border-radius: 8px; width: 90%; margin-top: 6px; cursor: pointer;">
+            🔄 मुख्य मेनू पर लौटें
+        </button>
+    </div>
+
+</div>
+
+<!-- Google Form Integration -->
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+<form id="googleForm" action="https://docs.google.com/forms/d/e/1FAIpQLSf2boLZmDGK3e2YwpHA2__gDDplH-W8flTaloSP7eTOqlSWvQ/formResponse" method="POST" target="hidden_iframe" style="display:none;">
+    <input type="text" name="entry.111111" id="f_name">
+    <input type="text" name="entry.222222" id="f_score">
+    <input type="text" name="entry.333333" id="f_correct">
+    <input type="text" name="entry.444444" id="f_wrong">
+    <input type="text" name="entry.555555" id="f_time">
+</form>
+
+<script>
+    let studentName = "";
+    let studentId = "";
+    let studentPhotoBase64 = "";
+    let n1, n2, sahiJawab, symbol;
+    let currentOp = '+';
+    let currentLevel = 1;
+    let quizType = 'math';
+    let score = 0;
+    let totalQ = 0;
+    let correctQ = 0;
+    let wrongQ = 0;
+    
+    let startTime = 0;
+    let totalSecondsSpent = 0;
+    let timeLeft = 30;
+    let timerInterval;
+    let isPaused = false;
+    let currentLbTab = 'daily';
+
+    const scienceQuestions = [
+        { q: "पेड़-पौधे सूर्य के प्रकाश से अपना भोजन बनाते हैं, इसे क्या कहते हैं?", options: ["प्रकाश संश्लेषण (Photosynthesis)", "श्वसन", "वाष्पोत्सर्जन", "पाचन"], answer: "प्रकाश संश्लेषण (Photosynthesis)" },
+        { q: "हमारे सौरमंडल में कुल कितने ग्रह हैं?", options: ["7", "8", "9", "6"], answer: "8" },
+        { q: "मानव शरीर में कुल कितनी हड्डियाँ होती हैं (वयस्क में)?", options: ["206", "300", "150", "250"], answer: "206" },
+        { q: "पौधों का हरा रंग किस वर्णक (Pigment) के कारण होता है?", options: ["क्लोरोफिल (Chlorophyll)", "हीमोग्लोबिन", "कैरोटीन", "इनमें से कोई नहीं"], answer: "क्लोरोफिल (Chlorophyll)" },
+        { q: "हवा में सबसे अधिक मात्रा में कौन सी गैस पाई जाती है?", options: ["ऑक्सीजन", "नाइट्रोजन", "कार्बन डाइऑक्साइड", "हाइड्रोजन"], answer: "नाइट्रोजन" }
+    ];
+
+    const evsQuestions = [
+        { q: "जल प्रदूषण का मुख्य कारण क्या है?", options: ["कारखानों का गंदा पानी व कचरा डालना", "पेड़ लगाना", "वर्षा होना", "सौर ऊर्जा का उपयोग"], answer: "कारखानों का गंदा पानी व कचरा डालना" },
+        { q: "बिहार का राजकीय पक्षी कौन सा है?", options: ["गौरैया (House Sparrow)", "तोता", "मोर", "कौवा"], answer: "गौरैया (House Sparrow)" },
+        { q: "हमें सांस लेने के लिए कौन सी गैस चाहिए?", options: ["ऑक्सीजन", "कार्बन डाइऑक्साइड", "नाइट्रोजन", "हीलियम"], answer: "ऑक्सीजन" },
+        { q: "पृथ्वी का कितना भाग पानी से घिरा हुआ है?", options: ["लगभग 71%", "लगभग 20%", "लगभग 50%", "लगभग 90%"], answer: "लगभग 71%" },
+        { q: "इनमें से कौन सा नवीकरणीय ऊर्जा का स्रोत है?", options: ["सौर ऊर्जा (Solar Energy)", "कोयला", "पेट्रोल", "डीजल"], answer: "सौर ऊर्जा (Solar Energy)" }
+    ];
+
+    const dictionaryData = [
+        { en: "Apple", pos: "Noun (संज्ञा)", hi: "सेब" },
+        { en: "School", pos: "Noun (संज्ञा)", hi: "विद्यालय" },
+        { en: "Teacher", pos: "Noun (संज्ञा)", hi: "शिक्षक" },
+        { en: "Student", pos: "Noun (संज्ञा)", hi: "विद्यार्थी" },
+        { en: "Book", pos: "Noun (संज्ञा)", hi: "किताब" },
+        { en: "Water", pos: "Noun (संज्ञा)", hi: "पानी" },
+        { en: "Sun", pos: "Noun (संज्ञा)", hi: "सूरज" },
+        { en: "Run", pos: "Verb (क्रिया)", hi: "दौड़ना" },
+        { en: "Read", pos: "Verb (क्रिया)", hi: "पढ़ना" },
+        { en: "Write", pos: "Verb (क्रिया)", hi: "लिखना" },
+        { en: "Good", pos: "Adjective (विशेषण)", hi: "अच्छा" },
+        { en: "Big", pos: "Adjective (विशेषण)", hi: "बड़ा" },
+        { en: "Happy", pos: "Adjective (विशेषण)", hi: "खुश" },
+        { en: "In", pos: "Preposition", hi: "में" },
+        { en: "On", pos: "Preposition", hi: "पर" }
+    ];
+
+    function bolo(shabd) {
+        let aawaz = new SpeechSynthesisUtterance(shabd);
+        aawaz.lang = "hi-IN";
+        window.speechSynthesis.speak(aawaz);
+    }
+
+    function boloEnglish(shabd) {
+        let aawaz = new SpeechSynthesisUtterance(shabd);
+        aawaz.lang = "en-US";
+        window.speechSynthesis.speak(aawaz);
+    }
+
+    function previewPhoto(event) {
+        let file = event.target.files[0];
+        if (file) {
+            let reader = new FileReader();
+            reader.onload = function(e) {
+                studentPhotoBase64 = e.target.result;
+                let box = document.getElementById("photoPreviewBox");
+                box.innerHTML = `<img src="${studentPhotoBase64}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function generateStudentId(name) {
+        let randomNum = Math.floor(1000 + Math.random() * 9000);
+        return "PVBP-" + randomNum;
+    }
+
+    function shuruatKare() {
+        let nameInput = document.getElementById("studentNameInput").value.trim();
+        if (nameInput === "") {
+            alert("कृपया पहले अपना नाम दर्ज करें!");
+            return;
+        }
+        studentName = nameInput;
+        
+        let savedStudents = JSON.parse(localStorage.getItem("mathQuizStudentsNames") || "{}");
+        if (savedStudents[studentName]) {
+            studentId = savedStudents[studentName];
+        } else {
+            studentId = generateStudentId(studentName);
+            savedStudents[studentName] = studentId;
+            try {
+                localStorage.setItem("mathQuizStudentsNames", JSON.stringify(savedStudents));
+            } catch (e) {
+                // स्टोरेज फुल होने पर चुपचाप इग्नोर करें ताकि ऐप में रुकावट न आए
+            }
+        }
+
+        document.getElementById("displayName").innerText = studentName;
+        document.getElementById("displayId").innerText = studentId;
+        document.getElementById("badgeId").innerText = studentId;
+        
+        if (studentPhotoBase64) {
+            document.getElementById("menuAvatar").src = studentPhotoBase64;
+            document.getElementById("menuAvatar").style.display = "block";
+            document.getElementById("gameAvatar").src = studentPhotoBase64;
+            document.getElementById("gameAvatar").style.display = "block";
+        }
+        
+        startTime = Date.now();
+
+        document.getElementById("loginPanel").style.display = "none";
+        document.getElementById("menuPanel").style.display = "block";
+    }
+
+    function quizzMenuDikhao() {
+        document.getElementById("menuPanel").style.display = "none";
+        document.getElementById("quizModePanel").style.display = "block";
+    }
+
+    function scienceQuizMenuDikhao() {
+        document.getElementById("menuPanel").style.display = "none";
+        document.getElementById("scienceQuizPanel").style.display = "block";
+    }
+
+    function pahadaMenuDikhao() {
+        document.getElementById("menuPanel").style.display = "none";
+        document.getElementById("pahadaPanel").style.display = "block";
+        pahadaDikhao();
+    }
+
+    function storiesMenuDikhao() {
+        document.getElementById("menuPanel").style.display = "none";
+        document.getElementById("storiesPanel").style.display = "block";
+    }
+
+    function dictMenuDikhao() {
+        document.getElementById("menuPanel").style.display = "none";
+        document.getElementById("dictPanel").style.display = "block";
+        document.getElementById("searchInput").value = "";
+        searchWord();
+    }
+
+    function searchWord() {
+        let query = document.getElementById("searchInput").value.toLowerCase().trim();
+        let resultsBox = document.getElementById("dictResults");
+        
+        let filtered = dictionaryData.filter(item => 
+            item.en.toLowerCase().includes(query) || item.hi.includes(query) || item.pos.toLowerCase().includes(query)
+        );
+
+        let html = `<div style="font-size: 11px; color: #555; margin-bottom: 4px;">कुल ${filtered.length} शब्द मिले:</div>`;
+        if (filtered.length === 0) {
+            html = "कोई शब्द नहीं मिला।";
+        } else {
+            for (let item of filtered) {
+                html += `<div style="padding: 5px 0; border-bottom: 1px solid #b2dfdb; cursor: pointer; display: flex; justify-content: space-between; align-items: center;" onclick="boloEnglish('${item.en}')">
+                    <span>🔊 <b>${item.en}</b> <span style="font-size: 10px; color: #00796b;">(${item.pos})</span></span>
+                    <span style="color: #b71c1c; font-weight: bold;">${item.hi}</span>
+                </div>`;
+            }
+        }
+        resultsBox.innerHTML = html;
+    }
+
+    function setLeaderboardTab(tab) {
+        currentLbTab = tab;
+        if(tab === 'daily') {
+            document.getElementById("dailyTabBtn").style.background = "#6a1b9a";
+            document.getElementById("weeklyTabBtn").style.background = "#b0bec5";
+        } else {
+            document.getElementById("weeklyTabBtn").style.background = "#6a1b9a";
+            document.getElementById("dailyTabBtn").style.background = "#b0bec5";
+        }
+        leaderboardDikhao();
+    }
+
+    function getTodayDateStr() {
+        let d = new Date();
+        return d.toISOString().split('T')[0];
+    }
+
+    function getWeekNumber(d) {
+        d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+        d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay()||7));
+        let yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+        let weekNo = Math.ceil((((d - yearStart) / 86400000) + 1)/7);
+        return d.getUTCFullYear() + "-W" + weekNo;
+    }
+
+    function leaderboardDikhao() {
+        document.getElementById("menuPanel").style.display = "none";
+        document.getElementById("statsPanel").style.display = "none";
+        document.getElementById("quizModePanel").style.display = "none";
+        document.getElementById("scienceQuizPanel").style.display = "none";
+        document.getElementById("pahadaPanel").style.display = "none";
+        document.getElementById("storiesPanel").style.display = "none";
+        document.getElementById("dictPanel").style.display = "none";
+        document.getElementById("leaderboardPanel").style.display = "block";
+
+        let allRecords = JSON.parse(localStorage.getItem("mathQuizAllScores") || "[]");
+        let todayStr = getTodayDateStr();
+        let currentWeekStr = getWeekNumber(new Date());
+
+        let filteredRecords = allRecords.filter(item => {
+            if (currentLbTab === 'daily') {
+                return item.date === todayStr;
+            } else {
+                return item.week === currentWeekStr;
+            }
+        });
+
+        filteredRecords.sort((a, b) => b.score - a.score);
+        let top10 = filteredRecords.slice(0, 10);
+
+        let listHtml = "";
+        let periodName = (currentLbTab === 'daily') ? "आज (Daily)" : "इस हफ्ते (Weekly)";
+        
+        if (top10.length === 0) {
+            listHtml = `<b>${periodName}</b> के लिए अभी कोई रिकॉर्ड नहीं है। गेम खेलें!`;
+        } else {
+            listHtml = `<div style="text-align: center; color: #b71c1c; font-weight: bold; margin-bottom: 5px;">📍 ${periodName} की टॉप सूची</div>`;
+            for (let i = 0; i < top10.length; i++) {
+                let medal = "🏅";
+                if (i === 0) medal = "🥇";
+                if (i === 1) medal = "🥈";
+                if (i === 2) medal = "🥉";
+                listHtml += `${medal} <b>#${i+1}</b> [${top10[i].id}] <b>${top10[i].name}</b>: <b>${top10[i].score} अंक</b><br>`;
+            }
+        }
+        document.getElementById("leaderboardList").innerHTML = listHtml;
+    }
+
+    function getMyRank(myScore) {
+        let allRecords = JSON.parse(localStorage.getItem("mathQuizAllScores") || "[]");
+        let todayStr = getTodayDateStr();
+        let dailyRecords = allRecords.filter(item => item.date === todayStr);
+        dailyRecords.sort((a, b) => b.score - a.score);
+        
+        let rank = 1;
+        for (let i = 0; i < dailyRecords.length; i++) {
+            if (dailyRecords[i].score > myScore) {
+                rank++;
+            } else {
+                break;
+            }
+        }
+        return rank;
+    }
+
+    function mukhyaMenuParJao() {
+        clearInterval(timerInterval);
+        document.getElementById("quizModePanel").style.display = "none";
+        document.getElementById("scienceQuizPanel").style.display = "none";
+        document.getElementById("pahadaPanel").style.display = "none";
+        document.getElementById("storiesPanel").style.display = "none";
+        document.getElementById("dictPanel").style.display = "none";
+        document.getElementById("leaderboardPanel").style.display = "none";
+        document.getElementById("gamePanel").style.display = "none";
+        document.getElementById("statsPanel").style.display = "none";
+        document.getElementById("menuPanel").style.display = "block";
+    }
+
+    function pahadaDikhao() {
+        let num = parseInt(document.getElementById("pahadaNum").value);
+        let htmlText = "";
+        for (let i = 1; i <= 10; i++) {
+            htmlText += `<b>${num} × ${i} = ${num * i}</b><br>`;
+        }
+        document.getElementById("pahadaBox").innerHTML = htmlText;
+    }
+
+    function opChuno(op) {
+        quizType = 'math';
+        currentOp = op;
+        updateInfoText();
+    }
+
+    function levelChuno(lvl) {
+        currentLevel = lvl;
+        updateInfoText();
+    }
+
+    function startScienceQuiz(type) {
+        quizType = type;
+        updateInfoText();
+    }
+
+    function updateInfoText() {
+        score = 0;
+        totalQ = 0;
+        correctQ = 0;
+        wrongQ = 0;
+        document.getElementById("scoreBox").innerText = score;
+        document.getElementById("quizModePanel").style.display = "none";
+        document.getElementById("scienceQuizPanel").style.display = "none";
+        document.getElementById("statsPanel").style.display = "none";
+        document.getElementById("gamePanel").style.display = "block";
+        isPaused = false;
+        nayaSawal();
+    }
+
+    function gameRoko() {
+        if (!isPaused) {
+            clearInterval(timerInterval);
+            isPaused = true;
+            document.getElementById("sawalBox").innerText = "⏸️ गेम रुका हुआ है";
+            document.getElementById("messageBox").style.color = "#d32f2f";
+            document.getElementById("messageBox").innerText = "गेम रोक दिया गया है।";
+        } else {
+            isPaused = false;
+            document.getElementById("messageBox").innerText = "";
+            nayaSawal();
+        }
+    }
+
+    function gameDubaraShuruKaro() {
+        mukhyaMenuParJao();
+    }
+
+    function nayaSawal() {
+        if (isPaused) return;
+        clearInterval(timerInterval);
+        timeLeft = 30;
+        document.getElementById("timerBox").innerText = timeLeft;
+
+        timerInterval = setInterval(function() {
+            if (!isPaused) {
+                timeLeft--;
+                document.getElementById("timerBox").innerText = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    wrongQ++;
+                    totalQ++;
+                    gameOver("समय समाप्त! ⏰");
+                }
+            }
+        }, 1000);
+
+        let optionsBox = document.getElementById("optionsBox");
+        let jawabInput = document.getElementById("jawabInput");
+        let submitBtn = document.getElementById("submitBtn");
+
+        if (quizType === 'math') {
+            optionsBox.style.display = "none";
+            jawabInput.style.display = "inline-block";
+            submitBtn.style.display = "inline-block";
+
+            let maxLimit = 15;
+            if(currentLevel === 2) maxLimit = 40;
+            if(currentLevel === 3) maxLimit = 100;
+
+            if (currentOp === '+') {
+                n1 = Math.floor(Math.random() * maxLimit) + 5;
+                n2 = Math.floor(Math.random() * maxLimit) + 5;
+                sahiJawab = n1 + n2;
+                symbol = " + ";
+            } else if (currentOp === '-') {
+                n1 = Math.floor(Math.random() * maxLimit) + 10;
+                n2 = Math.floor(Math.random() * n1) + 1;
+                sahiJawab = n1 - n2;
+                symbol = " - ";
+            } else if (currentOp === '*') {
+                let m = (currentLevel === 1) ? 10 : (currentLevel === 2) ? 15 : 25;
+                n1 = Math.floor(Math.random() * m) + 2;
+                n2 = Math.floor(Math.random() * 10) + 2;
+                sahiJawab = n1 * n2;
+                symbol = " × ";
+            } else if (currentOp === '/') {
+                let m = (currentLevel === 1) ? 10 : (currentLevel === 2) ? 15 : 20;
+                n2 = Math.floor(Math.random() * m) + 2;
+                let quotient = Math.floor(Math.random() * 10) + 2;
+                n1 = n2 * quotient;
+                sahiJawab = quotient;
+                symbol = " ÷ ";
+            }
+
+            document.getElementById("sawalBox").innerText = n1 + symbol + n2 + " = ?";
+            jawabInput.value = "";
+            document.getElementById("messageBox").innerText = "";
+            jawabInput.focus();
+        } else {
+            optionsBox.style.display = "block";
+            jawabInput.style.display = "none";
+            submitBtn.style.display = "none";
+
+            let qList = (quizType === 'science') ? scienceQuestions : evsQuestions;
+            let currentQObj = qList[Math.floor(Math.random() * qList.length)];
+            
+            document.getElementById("sawalBox").innerText = currentQObj.q;
+            sahiJawab = currentQObj.answer;
+
+            let optHtml = "";
+            for (let opt of currentQObj.options) {
+                optHtml += `<button onclick="checkMcqAnswer('${opt.replace(/'/g, "\\'")}')" style="background: #e0f2f1; border: 2px solid #00838f; padding: 8px; margin: 4px; width: 90%; border-radius: 6px; font-weight: bold; cursor: pointer; color: #006064;">${opt}</button><br>`;
+            }
+            optionsBox.innerHTML = optHtml;
+            document.getElementById("messageBox").innerText = "";
+        }
+    }
+
+    function jawabCheckKaro() {
+        let userJawab = document.getElementById("jawabInput").value;
+        if (userJawab === "") {
+            document.getElementById("messageBox").style.color = "#d32f2f";
+            document.getElementById("messageBox").innerText = "⚠️ कृपया पहले उत्तर लिखें!";
+            return;
+        }
+        processAnswer(parseInt(userJawab) === sahiJawab);
+    }
+
+    function checkMcqAnswer(selectedOpt) {
+        processAnswer(selectedOpt === sahiJawab);
+    }
+
+    function processAnswer(isCorrect) {
+        totalQ++;
+        let msg = document.getElementById("messageBox");
+
+        if (isCorrect) {
+            correctQ++;
+            let timeTaken = 30 - timeLeft;
+            let basePoints = 10;
+            let bonusPoints = (timeTaken <= 15) ? Math.floor((15 - timeTaken) / 2) : 0;
+            let totalEarned = basePoints + bonusPoints;
+            score += totalEarned;
+
+            document.getElementById("scoreBox").innerText = score;
+            msg.style.color = "green";
+            msg.innerText = `🎉 सही जवाब! (+${totalEarned} अंक)`;
+            bolo("शाबाश!");
+            setTimeout(nayaSawal, 1000);
+        } else {
+            wrongQ++;
+            msg.style.color = "red";
+            msg.innerText = "❌ गलत जवाब! सही उत्तर: " + sahiJawab;
+            bolo("गलत जवाब!");
+            setTimeout(nayaSawal, 1500);
+        }
+    }
+
+    function gameOver(reason) {
+        clearInterval(timerInterval);
+        document.getElementById("gamePanel").style.display = "none";
+        
+        let endTime = Date.now();
+        totalSecondsSpent = Math.floor((endTime - startTime) / 1000);
+        let minutes = Math.floor(totalSecondsSpent / 60);
+        let seconds = totalSecondsSpent % 60;
+        let timeString = minutes + " मिनट " + seconds + " सेकंड";
+
+        let scoreRecord = {
+            id: studentId,
+            name: studentName,
+            score: score,
+            date: getTodayDateStr(),
+            week: getWeekNumber(new Date())
+        };
+
+        let allRecords = JSON.parse(localStorage.getItem("mathQuizAllScores") || "[]");
+        allRecords.push(scoreRecord);
+        try {
+            localStorage.setItem("mathQuizAllScores", JSON.stringify(allRecords));
+        } catch (e) {
+            // स्टोरेज फुल होने पर मैनेज करने के लिए
+        }
+
+        let myRank = getMyRank(score);
+
+        document.getElementById("reportId").innerText = studentId;
+        document.getElementById("reportName").innerText = studentName;
+        document.getElementById("finalScore").innerText = score;
+        document.getElementById("playerRank").innerText = `⭐ #${myRank} स्थान`;
+        document.getElementById("totalCorrect").innerText = correctQ;
+        document.getElementById("totalWrong").innerText = wrongQ;
+        document.getElementById("watchTimeDisplay").innerText = timeString;
+        
+        if (studentPhotoBase64) {
+            document.getElementById("reportAvatar").src = studentPhotoBase64;
+            document.getElementById("reportAvatar").style.display = "inline-block";
+        }
+        
+        document.getElementById("f_name").value = `[${studentId}] ${studentName}`;
+        document.getElementById("f_score").value = score;
+        document.getElementById("f_correct").value = correctQ;
+        document.getElementById("f_wrong").value = wrongQ;
+        document.getElementById("f_time").value = timeString;
+        document.getElementById("googleForm").submit();
+        
+        document.getElementById("formStatus").innerText = "✅ डेटा आपके Google Form में दर्ज हो गया!";
+        document.getElementById("statsPanel").style.display = "block";
+        bolo("गेम समाप्त हो गया " + studentName + "। आपकी रैंकिंग नंबर " + myRank + " है।");
+    }
+</script>
+
+</body>
+</html>
